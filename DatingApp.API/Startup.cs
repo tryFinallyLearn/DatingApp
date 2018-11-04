@@ -69,7 +69,7 @@ namespace DatingApp.API
             app.UseCors("myCorsPolicy");
             app.UseAuthentication();
             // app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
