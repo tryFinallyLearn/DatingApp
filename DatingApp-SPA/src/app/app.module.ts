@@ -8,6 +8,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { HomeComponent } from "./home/home.component";
 import { NavComponent } from "./nav/nav.component";
 import { RegisterComponent } from "./register/register.component";
+import { ErrorInterceptorProvide } from "./services/error.interceptor";
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,8 +19,13 @@ import { RegisterComponent } from "./register/register.component";
     NavComponent,
     RegisterComponent
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
-  providers: [],
+  imports: [BrowserModule, 
+    FormsModule, HttpClientModule,
+    BsDropdownModule.forRoot(), 
+    AppRoutingModule],
+  providers: [
+    ErrorInterceptorProvide
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
