@@ -10,6 +10,9 @@ import { NavComponent } from "./nav/nav.component";
 import { RegisterComponent } from "./register/register.component";
 import { ErrorInterceptorProvide } from "./services/error.interceptor";
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { MemberListComponent } from './member-list/member-list.component';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ValueComponent,
     HomeComponent,
     NavComponent,
-    RegisterComponent
+    RegisterComponent,
+    MemberListComponent,
+    ListsComponent,
+    MessagesComponent
   ],
   imports: [BrowserModule, 
     FormsModule, HttpClientModule,

@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using AutoMapper;
 
 namespace DatingApp.API
 {
@@ -31,7 +33,12 @@ namespace DatingApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(Options =>
+                {
+                    Options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
             services.AddCors(x =>
             {
                 x.AddPolicy("myCorsPolicy", p =>
@@ -39,7 +46,10 @@ namespace DatingApp.API
                      p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                  });
             });
+            services.AddAutoMapper();
+            services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -56,7 +66,9 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+         IHostingEnvironment env,
+         Seed seeder)
         {
             if (env.IsDevelopment())
             {
@@ -66,6 +78,7 @@ namespace DatingApp.API
             {
                 // app.UseHsts();
             }
+            // seeder.SeedUsers();
             app.UseCors("myCorsPolicy");
             app.UseAuthentication();
             // app.UseHttpsRedirection();
