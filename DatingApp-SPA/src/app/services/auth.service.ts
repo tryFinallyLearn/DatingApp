@@ -18,7 +18,7 @@ export class AuthService {
     return this.http.post(this.url + "/login", model).pipe(
       map((x: any) => {
         if (x) {
-          localStorage.setItem("token", x.token);
+          localStorage.setItem("access_token", x.token);
           this.decodedToken = this.jwtHelper.decodeToken(x.token);
           // console.log(this.decodedToken);
         }
@@ -29,12 +29,12 @@ export class AuthService {
     return this.http.post(this.url + "/register", model);
   }
   loggedIn() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     return !this.jwtHelper.isTokenExpired(token);
   }
 
   onStart(){
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (token) {
       this.decodedToken = this.jwtHelper.decodeToken(token);
     }
